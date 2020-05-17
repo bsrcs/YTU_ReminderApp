@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "979260447256",
+    "firebase_url": "https://remindme-20058.firebaseio.com",
+    "project_id": "remindme-20058",
+    "storage_bucket": "remindme-20058.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979260447256:android:d152f6f521f7d78381416d",
+        "android_client_info": {
+          "package_name": "com.busra.reminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979260447256-t9rd8k6435f4j5qvupkdggb6aadscplq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.busra.reminder",
+            "certificate_hash": "8f0c32fb9c49d30489715bc8b4d5b88744aa8e21"
+          }
+        },
+        {
+          "client_id": "979260447256-m8haha6m02s0a7lgnj7mql4u2d33cmj2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLkCLXV-JZT52WyPQLER_r_YDqK_7ZDlA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "979260447256-m8haha6m02s0a7lgnj7mql4u2d33cmj2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

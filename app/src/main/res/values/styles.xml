@@ -1,0 +1,33 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="screenBackground">@color/bg_light</item>
+        <item name="listItemBackground">@drawable/bg_item_todo_light</item>
+        <item name="listItemTextHeading">@color/colorPrimaryDark</item>
+        <item name="inputSelectorColor">#F8F8F8</item>
+        <item name="editTextColor">@color/colorAccent</item>
+
+
+    </style>
+
+    <style name="CircularProgress" parent="Theme.AppCompat.DayNight">
+        <item name="colorAccent">#9F489B</item>
+    </style>
+    <style name="listItemBg" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:background">@drawable/bg_item_todo_light</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="clockTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:background">@drawable/btn_clock</item>
+
+    </style>
+    <style name="calenderTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:background">@drawable/btn_calendar</item>
+
+    </style>
+</resources>

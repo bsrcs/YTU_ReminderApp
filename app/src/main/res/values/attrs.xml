@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="customAttr">
+        <attr name="screenBackground" format="color" />
+        <attr name="listItemBackground" format="color" />
+        <attr name="listItemTextHeading" format="color" />
+        <attr name="inputSelectorColor" format="color" />
+        <attr name="editTextColor" format="color" />
+
+    </declare-styleable>
+</resources>

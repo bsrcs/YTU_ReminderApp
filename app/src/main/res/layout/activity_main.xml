@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/screenBackground"
+    tools:context=".activity.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/topbox"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:layout_height="198dp">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_marginStart="16dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titlePage"
+                    android:layout_marginTop="20dp"
+                    android:textSize="32sp"
+                    android:textColor="#FFF"
+                    android:text="@string/app_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/subtitlePage"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorGray"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/title_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+
+            <ImageButton
+                android:id="@+id/btnLogOut"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_log_out" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:background="#131E69"
+            android:layout_height="1dp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/taskList"
+        android:layout_width="match_parent"
+        android:layout_below="@id/topbox"
+        android:layout_marginTop="-60dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+
+        android:id="@+id/endPage"
+        android:layout_below="@id/taskList"
+        android:textSize="16sp"
+        android:textColor="@color/colorGray"
+        android:layout_marginTop="20dp"
+        android:text="@string/end_desc"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topbox"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="83dp"
+        android:theme="@style/CircularProgress"
+        android:visibility="invisible" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddNewTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_add_white_24dp"
+        app:maxImageSize="24dp"
+        android:backgroundTint="@color/colorAccent"
+        android:contentDescription="@string/add_btn"
+        android:layout_margin="16dp" />
+</RelativeLayout>

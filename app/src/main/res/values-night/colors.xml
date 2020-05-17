@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Set colors-->
+    <color name="colorPrimaryNight">#3F51B5</color>
+    <color name="colorPrimaryDarkNight">#303F9F</color>
+    <color name="colorAccentNight">#FFC107</color>
+    <color name="bg_dark">#263238</color>
+</resources>
