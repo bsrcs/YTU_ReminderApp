@@ -184,9 +184,21 @@ tools:context=".activity.MainActivity">
     android:text="@string/btn_cancel"
     android:textColor="#cc2121"
     android:textAllCaps="false"
-
     android:textSize="22sp"
     android:layout_width="match_parent"
     android:layout_height="60dp" />
+
+    <Button
+        android:id="@+id/btnShareNew"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Share Task"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_btn_create"
+        android:textSize="22sp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
 
 </LinearLayout>

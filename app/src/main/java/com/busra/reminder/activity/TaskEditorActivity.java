@@ -63,6 +63,7 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.btnDelete).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnEditTime).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnEditDate).setOnClickListener((View.OnClickListener) this);
+        findViewById(R.id.btnShare).setOnClickListener((View.OnClickListener) this);
     }
 
     @Override
@@ -76,6 +77,8 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
             editTime();
         else if (i == R.id.btnEditDate)
             editDate();
+        else if (i == R.id.btnShare)
+            shareTask();
     }
 
     private void insertData() {
@@ -170,5 +173,19 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
+    }
+
+    private void shareTask()
+    {
+        String titleShare,deskShare;
+        titleShare=titleEdit.getText().toString();
+        deskShare=descEdit.getText().toString();
+
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_SUBJECT,"Your task is " +titleShare );
+        email.putExtra(Intent.EXTRA_TEXT,"Task Description is " +deskShare  );
+        email.setType("message/rfc822");
+        startActivity(Intent.createChooser(email, "Choose an Email client :"));
+
     }
 }

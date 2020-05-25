@@ -186,4 +186,17 @@
         android:layout_width="match_parent"
         android:layout_height="55dp" />
 
+    <Button
+        android:id="@+id/btnShare"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Share Task"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_btn_create"
+        android:textSize="22sp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
 </LinearLayout>

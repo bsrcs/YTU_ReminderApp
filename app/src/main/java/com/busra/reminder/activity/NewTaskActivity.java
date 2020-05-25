@@ -70,6 +70,7 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.btnCancel).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnSetTime).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnSetDate).setOnClickListener((View.OnClickListener) this);
+        findViewById(R.id.btnShareNew).setOnClickListener((View.OnClickListener) this);
     }
     //This method inserts data to the firebase server
     private void insertData() {
@@ -83,6 +84,7 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
                 dataSnapshot.getRef().child("dateTask").setValue(dateTask.getText().toString());
                 dataSnapshot.getRef().child("keyTask").setValue(keyTodo);
                 dataSnapshot.getRef().child("keyFirebase").setValue(firebaseKey);
+
 
                 Intent intent = new Intent(NewTaskActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -177,7 +179,23 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
+    private void shareTask()
+    {
+        String titleShare,deskShare;
+        titleShare=titleTask.getText().toString();
+        deskShare=descTask.getText().toString();
+        if(titleShare.isEmpty() && deskShare.isEmpty()) {
+            Toast.makeText(this, "First create a task !", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Intent email = new Intent(Intent.ACTION_SEND);
+            email.putExtra(Intent.EXTRA_SUBJECT, "Your task is " + titleShare);
+            email.putExtra(Intent.EXTRA_TEXT, "Task Description is " + deskShare);
+            email.setType("message/rfc822");
+            startActivity(Intent.createChooser(email, "Choose an Email client :"));
+        }
 
+    }
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -196,6 +214,9 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (i == R.id.btnSetDate) {
             setDate();
+        }
+        if (i == R.id.btnShareNew) {
+            shareTask();
         }
     }
 }

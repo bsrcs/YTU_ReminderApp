@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                                 //if nightmode is not enabled then turn on the night mode and set the flag to true  else turn off the night mode and set the flag to false
                               if( isNightModeEnabled()==false){
                                   setIsNightModeEnabled(true);
-                                  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                                   Toast.makeText(MainActivity.this, "Turned on nightmode !", Toast.LENGTH_SHORT).show();
                               }
                               else{
