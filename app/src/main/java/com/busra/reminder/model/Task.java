@@ -5,20 +5,20 @@ public class Task {
     private String title;
     private String desc;
     private String date;
-    private String key;
+    private String id;
     private String category;
     private String frequency;
-    private String keyFirebase;
 
     public Task() {
     }
 
-    public Task(String title, String desc, String date, String key, String keyFirebase) {
+    public Task(String title, String desc, String date, String id, String category, String frequency) {
         this.title = title;
         this.desc = desc;
         this.date = date;
-        this.key = key;
-        this.keyFirebase = keyFirebase;
+        this.id = id;
+        this.category = category;
+        this.frequency = frequency;
     }
 
     public String getTitle() {
@@ -45,27 +45,39 @@ public class Task {
         this.date = date;
     }
 
-    public String getKey() {
-        return key;
+    public String getId() {
+        return id;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getKeyFirebase() {
-        return keyFirebase;
+    public String getCategory() {
+        return category;
     }
 
-    public void setKeyFirebase(String keyFirebase) {
-        this.keyFirebase = keyFirebase;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getCategory() { return category; }
+    public String getFrequency() {
+        return frequency;
+    }
 
-    public void setCategory(String category) { this.category = category; }
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
 
-    public String getFrequency() { return frequency; }
-
-    public void setFrequency(String frequency) { this.frequency = frequency; }
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                ", date='" + date + '\'' +
+                ", id='" + id + '\'' +
+                ", category='" + category + '\'' +
+                ", frequency='" + frequency + '\'' +
+                '}';
+    }
 }

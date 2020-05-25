@@ -61,7 +61,7 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
     private DatabaseReference reference;
     private String firebaseKey;
 
-    private String keyTodo = UUID.randomUUID().toString();
+    private String newTaskId = UUID.randomUUID().toString();
     private Uri mCurrentReminderUri;
     String startTime,startDate ;
     int h,m,dd,mm,yyyy;
@@ -77,9 +77,8 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         editTextDate = (EditText) findViewById(R.id.dateTodoTask);
         editTextDate.setEnabled(false);
 
-        // Firebase
-        reference = FirebaseHelper.initFirebase(this).child("Task" + keyTodo);
-        firebaseKey = FirebaseHelper.getFirebaseKey();
+        // initialise firebase to insert new Task
+        reference = FirebaseHelper.initFirebase(this).child(newTaskId);
 
         // Init buttons
         findViewById(R.id.btnCreateTask).setOnClickListener((View.OnClickListener) this);
@@ -100,8 +99,7 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
                 //TODO add views to get category and frequency
                 dataSnapshot.getRef().child(CATEGORY).setValue("");
                 dataSnapshot.getRef().child(FREQUENCY).setValue("");
-                dataSnapshot.getRef().child(KEY).setValue(keyTodo);
-                dataSnapshot.getRef().child(KEY_FIREBASE).setValue(firebaseKey);
+                dataSnapshot.getRef().child(ID).setValue(newTaskId);
                 Intent intent = new Intent(NewTaskActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

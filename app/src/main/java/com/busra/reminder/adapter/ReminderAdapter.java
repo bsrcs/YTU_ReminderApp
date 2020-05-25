@@ -54,10 +54,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         final String title = tasks.get(position).getTitle();
         final String description = tasks.get(position).getDesc();
         final String date = tasks.get(position).getDate();
-        final String key = tasks.get(position).getKey();
+        final String taskId = tasks.get(position).getId();
         final String frequency = tasks.get(position).getFrequency();
         final String category = tasks.get(position).getCategory();
-        final String keyFirebase = tasks.get(position).getKeyFirebase();
 
         //Edit Task config
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +66,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
                 intent.putExtra(TITLE, title);
                 intent.putExtra(DESC, description);
                 intent.putExtra(DATE, date);
-                intent.putExtra(KEY, key);
+                intent.putExtra(ID, taskId);
                 intent.putExtra(FREQUENCY, frequency);
                 intent.putExtra(CATEGORY, category);
-                intent.putExtra(KEY_FIREBASE, keyFirebase);
                 context.startActivity(intent);
             }
         });

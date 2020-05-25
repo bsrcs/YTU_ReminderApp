@@ -2,6 +2,7 @@ package com.busra.reminder.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.busra.reminder.constant.ReminderAppConstants.*;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -34,7 +35,7 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
 
     private DatabaseReference reference;
     private String firebaseKey;
-    private String keyTodo;
+    private String taskId;
     private Uri newReminderUri;
     String startTime,startDate ;
     int h,m,dd,mm,yyyy;
@@ -49,13 +50,13 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         dateEdit = (EditText) findViewById(R.id.dateEdit);
 
         // get a value from prev page
-        titleEdit.setText(getIntent().getStringExtra("titleTask"));
-        descEdit.setText(getIntent().getStringExtra("descTask"));
-        dateEdit.setText(getIntent().getStringExtra("dateTask"));
-        keyTodo = getIntent().getStringExtra("keyTask");
+        titleEdit.setText(getIntent().getStringExtra(TITLE));
+        descEdit.setText(getIntent().getStringExtra(DESC));
+        dateEdit.setText(getIntent().getStringExtra(DATE));
+        taskId = getIntent().getStringExtra(ID);
 
-        // Firebase
-        reference = FirebaseHelper.initFirebase(this).child("Task" + keyTodo);
+        // get reference from firebase by using the the id of task to be editing
+        reference = FirebaseHelper.initFirebase(this).child(taskId);
         firebaseKey = FirebaseHelper.getFirebaseKey();
 
         // Init buttons
@@ -83,11 +84,9 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
 
     private void insertData() {
         // Edit task in database
-        reference.child("titleTask").setValue(titleEdit.getText().toString());
-        reference.child("descTask").setValue(descEdit.getText().toString());
-        reference.child("dateTask").setValue(dateEdit.getText().toString());
-        reference.child("keyTask").setValue(keyTodo);
-        reference.child("keyFirebase").setValue(firebaseKey);
+        reference.child(TITLE).setValue(titleEdit.getText().toString());
+        reference.child(DESC).setValue(descEdit.getText().toString());
+        reference.child(DATE).setValue(dateEdit.getText().toString());
 
         Intent intent = new Intent(TaskEditorActivity.this, MainActivity.class);
         startActivity(intent);
