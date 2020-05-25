@@ -138,25 +138,20 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         } else {
             ReminderAlarmService.notificationContent = editTextDescEdit.getText().toString();
         }
-
-
         new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, newReminderUri);
     }
 
     private void deleteData() {
         // delete task in database
         reference.removeValue();
-
         Intent intent = new Intent(TaskEditorActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
     private void editTime() {
-
         int mHour = c.get(Calendar.HOUR_OF_DAY);
         int mMinute = c.get(Calendar.MINUTE);
-
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(TaskEditorActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
@@ -174,7 +169,6 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
 
     private void editDate() {
         // Get Current Date
-
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);

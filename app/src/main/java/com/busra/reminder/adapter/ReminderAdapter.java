@@ -2,9 +2,11 @@ package com.busra.reminder.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import static com.busra.reminder.constant.ReminderAppConstants.*;
 import androidx.annotation.NonNull;
@@ -24,11 +26,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView titleTask, descTask, dateTask;
+        LinearLayout linearLayoutContainer;
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTask = (TextView) itemView.findViewById(R.id.titleTask);
             descTask = (TextView) itemView.findViewById(R.id.descTask);
             dateTask = (TextView) itemView.findViewById(R.id.dateTask);
+            linearLayoutContainer=(LinearLayout) itemView.findViewById(R.id.linearLayoutContainer);
         }
     }
 
@@ -50,14 +54,15 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         holder.titleTask.setText(tasks.get(position).getTitle());
         holder.descTask.setText(tasks.get(position).getDesc());
         holder.dateTask.setText(tasks.get(position).getDate());
-
         final String title = tasks.get(position).getTitle();
         final String description = tasks.get(position).getDesc();
         final String date = tasks.get(position).getDate();
         final String taskId = tasks.get(position).getId();
         final String frequency = tasks.get(position).getFrequency();
         final String category = tasks.get(position).getCategory();
-
+        if(category.equals("bday")){
+            holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FFC0CB"));
+        }
         //Edit Task config
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

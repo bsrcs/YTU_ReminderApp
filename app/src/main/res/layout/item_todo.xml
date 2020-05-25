@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="?attr/listItemBackground"
-
+    android:id="@+id/linearLayoutContainer"
     android:orientation="horizontal"
     android:layout_marginBottom="20dp"
     android:layout_height="100dp">

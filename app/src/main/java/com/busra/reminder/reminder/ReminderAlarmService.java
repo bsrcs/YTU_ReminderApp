@@ -26,7 +26,7 @@ public class ReminderAlarmService extends IntentService {
     String CHANNEL_ID = "my_channel_01";// The id of the channel.
     CharSequence name = "test ";// The user-visible name of the channel.
     int importance = NotificationManager.IMPORTANCE_HIGH;
-   public static String notificationContent="Tap to view more!";
+    public static String notificationContent = "Tap to view more!";
 
 //  public void setNotificationContent(String mNotificationContent){
 //      notificationContent=mNotificationContent;
@@ -48,48 +48,31 @@ public class ReminderAlarmService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
-
-
-       // set false to disable badges, Oreo exclusive
-
+        // set false to disable badges, Oreo exclusive
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel( CHANNEL_ID, name, importance);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setShowBadge(true);
             manager.createNotificationChannel(channel);
         }
-
         Uri uri = intent.getData();
-
         //Display a notification to view the task details
         Intent action = new Intent(this, MainActivity.class);
         action.setData(uri);
         PendingIntent operation = TaskStackBuilder.create(this)
                 .addNextIntentWithParentStack(action)
                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-
         String description = "";
-
-
-
-
-
-
-        Notification note = new NotificationCompat.Builder(this,CHANNEL_ID)
+        Notification note = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("You have work to do !")
                 .setContentText(notificationContent)
-               .setSmallIcon(R.drawable.ic_logo_24)
+                .setSmallIcon(R.drawable.ic_logo_24)
                 .setContentIntent(operation)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();
 
-        Log.e("NOTIFICATION","Notification starts");
+        Log.e("NOTIFICATION", "Notification starts");
         manager.notify(NOTIFICATION_ID, note);
-
-
     }
 }
