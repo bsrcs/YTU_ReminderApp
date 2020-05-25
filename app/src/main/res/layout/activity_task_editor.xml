@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.MainActivity"
+    android:background="?attr/screenBackground">
+
+
 <LinearLayout
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/screenBackground"
-    tools:context=".activity.MainActivity">
-
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -50,6 +53,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
             android:orientation="vertical"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -63,9 +67,9 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/titleEdit"
+                android:id="@+id/editTextTitleEdit"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="30dp"
                 android:background="@drawable/bg_input_task"
                 android:hint="What You Do?"
                 android:inputType="text"
@@ -74,9 +78,62 @@
                 android:textColorHint="#B5B5B5" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/textViewCategory"
+                android:textSize="18sp"
+                android:textColor="?attr/listItemTextHeading"
+                android:text="@string/add_category_task"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/editTextCategoryEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/bg_input_task"
+                android:hint="What type of task?"
+                android:inputType="text"
+                android:paddingLeft="12dp"
+                android:textColor="?attr/editTextColor"
+                android:textColorHint="#B5B5B5" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewFrequency"
+                android:textSize="18sp"
+                android:textColor="?attr/listItemTextHeading"
+                android:text="@string/add_frequency_task"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spinnerFrequencyOptionsEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="12dp">
+            </Spinner>
+
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
             android:orientation="vertical"
@@ -93,7 +150,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/descEdit"
+                android:id="@+id/editTextDescEdit"
                 android:inputType="text"
                 android:background="@drawable/bg_input_task"
                 android:paddingLeft="12dp"
@@ -102,12 +159,12 @@
                 android:textColor="?attr/editTextColor"
                 android:hint="How to?"
                 android:layout_width="match_parent"
-                android:layout_height="55dp" />
+                android:layout_height="30dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
             android:orientation="vertical"
@@ -115,7 +172,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/editDateTask"
+                android:id="@+id/textViewDateTask"
                 android:textSize="18sp"
                 android:textColor="?attr/listItemTextHeading"
                 android:text="@string/add_date_task"
@@ -129,7 +186,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/dateEdit"
+                    android:id="@+id/editTextDateEdit"
                     android:inputType="text"
                     android:background="@drawable/bg_input_task"
                     android:paddingLeft="12dp"
@@ -138,21 +195,21 @@
                     android:textColor="?attr/editTextColor"
                     android:hint="When will?"
                     android:layout_width="0dp"
-                    android:layout_height="55dp"
+                    android:layout_height="35dp"
                     android:layout_weight="1"/>
 
                 <ImageButton
                     android:id="@+id/btnEditTime"
                     android:layout_marginTop="3dp"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     style="@style/clockTheme"/>
 
                 <ImageButton
                     android:id="@+id/btnEditDate"
                     android:layout_marginTop="3dp"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     style="@style/calenderTheme"/>
             </LinearLayout>
 
@@ -162,41 +219,43 @@
 
     <Button
         android:id="@+id/btnEdit"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
         android:text="Update Task"
         android:textColor="@color/colorWhite"
         android:textAllCaps="false"
         android:background="@drawable/bg_btn_create"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:layout_width="match_parent"
-        android:layout_height="55dp" />
-
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="14dp"
-        android:text="@string/btn_delete"
-        android:textColor="@color/colorWhite"
-        android:textAllCaps="false"
-        android:background="@drawable/bg_btn_delete"
-        android:textSize="22sp"
-        android:layout_width="match_parent"
-        android:layout_height="55dp" />
-
+        android:layout_height="40dp" />
     <Button
         android:id="@+id/btnShare"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="10dp"
         android:text="Share Task"
         android:textColor="@color/colorWhite"
         android:textAllCaps="false"
         android:background="@drawable/bg_btn_create"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:layout_width="match_parent"
-        android:layout_height="55dp" />
+        android:layout_height="40dp" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_delete"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_btn_delete"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+
 
 </LinearLayout>
+</ScrollView>

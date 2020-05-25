@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -56,16 +58,19 @@ import java.util.UUID;
 
 public class NewTaskActivity extends AppCompatActivity implements View.OnClickListener {
     public Calendar c;
-    private EditText editTextTitle, editTextDesc, editTextDate;
-
+    private EditText editTextTitle, editTextDesc, editTextDate,editTextCategory;
+    private Spinner spinnerFrequencyOptions;
     private DatabaseReference reference;
-    private String firebaseKey;
-
     private String newTaskId = UUID.randomUUID().toString();
     private Uri mCurrentReminderUri;
     String startTime,startDate ;
     int h,m,dd,mm,yyyy;
-
+    private String[] FREQUENCY_OPTIONS = {
+            ReminderAppConstants.REMINDER_TYPE_ONCE,
+            ReminderAppConstants.REMINDER_TYPE_MONTHLY,
+            ReminderAppConstants.REMINDER_TYPE_WEEKLY,
+            ReminderAppConstants.REMINDER_TYPE_YEARLY
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +81,12 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         editTextDesc = (EditText) findViewById(R.id.descTodoTask);
         editTextDate = (EditText) findViewById(R.id.dateTodoTask);
         editTextDate.setEnabled(false);
-
+        editTextCategory = (EditText) findViewById(R.id.editTextCategory);
+        spinnerFrequencyOptions = findViewById(R.id.spinnerFrequencyOptions);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,FREQUENCY_OPTIONS);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spinnerFrequencyOptions.setAdapter(spinnerAdapter);
         // initialise firebase to insert new Task
         reference = FirebaseHelper.initFirebase(this).child(newTaskId);
 
@@ -85,7 +95,6 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.btnCancel).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnSetTime).setOnClickListener((View.OnClickListener) this);
         findViewById(R.id.btnSetDate).setOnClickListener((View.OnClickListener) this);
-        findViewById(R.id.btnShareNew).setOnClickListener((View.OnClickListener) this);
     }
     //This method inserts data to the firebase server
     private void insertData() {
@@ -96,9 +105,8 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
                 dataSnapshot.getRef().child(TITLE).setValue(editTextTitle.getText().toString());
                 dataSnapshot.getRef().child(DESC).setValue(editTextDesc.getText().toString());
                 dataSnapshot.getRef().child(DATE).setValue(editTextDate.getText().toString());
-                //TODO add views to get category and frequency
-                dataSnapshot.getRef().child(CATEGORY).setValue("");
-                dataSnapshot.getRef().child(FREQUENCY).setValue("");
+                dataSnapshot.getRef().child(CATEGORY).setValue(editTextCategory.getText().toString());
+                dataSnapshot.getRef().child(FREQUENCY).setValue((String)spinnerFrequencyOptions.getSelectedItem());
                 dataSnapshot.getRef().child(ID).setValue(newTaskId);
                 Intent intent = new Intent(NewTaskActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -228,9 +236,6 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (i == R.id.btnSetDate) {
             setDate();
-        }
-        if (i == R.id.btnShareNew) {
-            shareTask();
         }
     }
 }

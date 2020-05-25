@@ -17,6 +17,8 @@
     <!-- NewTask and Edit Activity -->
     <string name="title_page_task">Create New Task</string>
     <string name="add_title_task">Add Title</string>
+    <string name="add_category_task">Add Category</string>
+    <string name="add_frequency_task">Add Frequency</string>
     <string name="add_desc_task">Description</string>
     <string name="add_date_task">Timeline</string>
     <string name="btn_save_task">Create Now</string>

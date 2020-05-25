@@ -2,7 +2,6 @@ package com.busra.reminder.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.busra.reminder.constant.ReminderAppConstants.*;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -10,54 +9,75 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
-
+import com.busra.reminder.constant.ReminderAppConstants;
 import com.busra.reminder.reminder.AlarmScheduler;
 import com.busra.reminder.reminder.ReminderAlarmService;
 import com.busra.reminder.utils.DateTimeUtils;
 import com.busra.reminder.utils.FirebaseHelper;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import com.busra.reminder.R;
 
 import java.util.Calendar;
 
+import static com.busra.reminder.constant.ReminderAppConstants.CATEGORY;
+import static com.busra.reminder.constant.ReminderAppConstants.DATE;
+import static com.busra.reminder.constant.ReminderAppConstants.DESC;
+import static com.busra.reminder.constant.ReminderAppConstants.FREQUENCY;
+import static com.busra.reminder.constant.ReminderAppConstants.ID;
+import static com.busra.reminder.constant.ReminderAppConstants.REMINDER_TYPE_MONTHLY;
+import static com.busra.reminder.constant.ReminderAppConstants.REMINDER_TYPE_WEEKLY;
+import static com.busra.reminder.constant.ReminderAppConstants.REMINDER_TYPE_YEARLY;
+import static com.busra.reminder.constant.ReminderAppConstants.TITLE;
+
 public class TaskEditorActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText titleEdit, descEdit, dateEdit;
-
+    private EditText editTextTitleEdit, editTextCategoryEdit, editTextDescEdit, editTextDateEdit;
+    private Spinner spinnerFrequencyOptionsEdit;
     private DatabaseReference reference;
-    private String firebaseKey;
     private String taskId;
     private Uri newReminderUri;
-    String startTime,startDate ;
+    String startTime,startDate, frequency;
     int h,m,dd,mm,yyyy;
     public Calendar c;
+    private String[] FREQUENCY_OPTIONS = {
+            ReminderAppConstants.REMINDER_TYPE_ONCE,
+            ReminderAppConstants.REMINDER_TYPE_MONTHLY,
+            ReminderAppConstants.REMINDER_TYPE_WEEKLY,
+            ReminderAppConstants.REMINDER_TYPE_YEARLY
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_editor);
         c = Calendar.getInstance();
-        titleEdit = (EditText) findViewById(R.id.titleEdit);
-        descEdit = (EditText) findViewById(R.id.descEdit);
-        dateEdit = (EditText) findViewById(R.id.dateEdit);
+        editTextTitleEdit = (EditText) findViewById(R.id.editTextTitleEdit);
+        editTextCategoryEdit =(EditText) findViewById(R.id.editTextCategoryEdit);
+        editTextDescEdit = (EditText) findViewById(R.id.editTextDescEdit);
+        editTextDateEdit = (EditText) findViewById(R.id.editTextDateEdit);
+        spinnerFrequencyOptionsEdit = (Spinner) findViewById(R.id.spinnerFrequencyOptionsEdit);
 
         // get a value from prev page
-        titleEdit.setText(getIntent().getStringExtra(TITLE));
-        descEdit.setText(getIntent().getStringExtra(DESC));
-        dateEdit.setText(getIntent().getStringExtra(DATE));
-        taskId = getIntent().getStringExtra(ID);
+        editTextTitleEdit.setText(getIntent().getStringExtra(TITLE));
+        editTextCategoryEdit.setText(getIntent().getStringExtra(CATEGORY));
+        editTextDescEdit.setText(getIntent().getStringExtra(DESC));
+        editTextDateEdit.setText(getIntent().getStringExtra(DATE));
+        // get frequency as a string from Intent
+        frequency = getIntent().getStringExtra(FREQUENCY);
 
+        taskId = getIntent().getStringExtra(ID);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,FREQUENCY_OPTIONS);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFrequencyOptionsEdit.setAdapter(spinnerAdapter);
+        //get the position(0,1,2,3) by frequency arg in func and set it to options in view
+        spinnerFrequencyOptionsEdit.setSelection(getSelectedPosition(frequency));
         // get reference from firebase by using the the id of task to be editing
         reference = FirebaseHelper.initFirebase(this).child(taskId);
-        firebaseKey = FirebaseHelper.getFirebaseKey();
 
         // Init buttons
         findViewById(R.id.btnEdit).setOnClickListener((View.OnClickListener) this);
@@ -84,9 +104,9 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
 
     private void insertData() {
         // Edit task in database
-        reference.child(TITLE).setValue(titleEdit.getText().toString());
-        reference.child(DESC).setValue(descEdit.getText().toString());
-        reference.child(DATE).setValue(dateEdit.getText().toString());
+        reference.child(TITLE).setValue(editTextTitleEdit.getText().toString());
+        reference.child(DESC).setValue(editTextDescEdit.getText().toString());
+        reference.child(DATE).setValue(editTextDateEdit.getText().toString());
 
         Intent intent = new Intent(TaskEditorActivity.this, MainActivity.class);
         startActivity(intent);
@@ -111,12 +131,12 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         long selectedTimestamp =  calendar.getTimeInMillis();
         Log.e("NOTIFICATION","Timestamp =" + " "+selectedTimestamp);
 
-        if(descEdit.getText().toString().isEmpty()){
+        if(editTextDescEdit.getText().toString().isEmpty()){
             ReminderAlarmService.notificationContent="Tap to view more !";
         }
         else
         {
-            ReminderAlarmService.notificationContent=descEdit.getText().toString();
+            ReminderAlarmService.notificationContent=editTextDescEdit.getText().toString();
         }
 
 
@@ -143,7 +163,7 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         String resultTime = DateTimeUtils.validTime(hourOfDay, minute);
-                        dateEdit.setText(DateTimeUtils.dateManager(resultTime));
+                        editTextDateEdit.setText(DateTimeUtils.dateManager(resultTime));
                         startTime= resultTime;
                         h=hourOfDay;
                         m=minute;
@@ -165,7 +185,7 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         String resultDate = DateTimeUtils.validDate(year, monthOfYear, dayOfMonth);
-                        dateEdit.setText(DateTimeUtils.dateManager(resultDate));
+                        editTextDateEdit.setText(DateTimeUtils.dateManager(resultDate));
                         yyyy=year;
                         mm=monthOfYear;
                         dd=dayOfMonth;
@@ -177,8 +197,8 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
     private void shareTask()
     {
         String titleShare,deskShare;
-        titleShare=titleEdit.getText().toString();
-        deskShare=descEdit.getText().toString();
+        titleShare=editTextTitleEdit.getText().toString();
+        deskShare=editTextDescEdit.getText().toString();
 
         Intent email = new Intent(Intent.ACTION_SEND);
         email.putExtra(Intent.EXTRA_SUBJECT,"Your task is " +titleShare );
@@ -186,5 +206,18 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         email.setType("message/rfc822");
         startActivity(Intent.createChooser(email, "Choose an Email client :"));
 
+    }
+
+    private int getSelectedPosition(String selectedFrequency){
+        switch(selectedFrequency){
+            case REMINDER_TYPE_MONTHLY:
+                return 1;
+            case REMINDER_TYPE_WEEKLY:
+                return 2;
+            case REMINDER_TYPE_YEARLY:
+                return 3;
+            default:
+                return 0;
+        }
     }
 }
