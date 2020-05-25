@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+
 import com.busra.reminder.constant.ReminderAppConstants;
 import com.busra.reminder.reminder.AlarmScheduler;
 import com.busra.reminder.reminder.ReminderAlarmService;
@@ -42,8 +43,8 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference reference;
     private String taskId;
     private Uri newReminderUri;
-    String startTime,startDate, frequency;
-    int h,m,dd,mm,yyyy;
+    String startTime, startDate, frequency;
+    int h, m, dd, mm, yyyy;
     public Calendar c;
     private String[] FREQUENCY_OPTIONS = {
             ReminderAppConstants.REMINDER_TYPE_ONCE,
@@ -51,13 +52,14 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
             ReminderAppConstants.REMINDER_TYPE_WEEKLY,
             ReminderAppConstants.REMINDER_TYPE_YEARLY
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_editor);
         c = Calendar.getInstance();
         editTextTitleEdit = (EditText) findViewById(R.id.editTextTitleEdit);
-        editTextCategoryEdit =(EditText) findViewById(R.id.editTextCategoryEdit);
+        editTextCategoryEdit = (EditText) findViewById(R.id.editTextCategoryEdit);
         editTextDescEdit = (EditText) findViewById(R.id.editTextDescEdit);
         editTextDateEdit = (EditText) findViewById(R.id.editTextDateEdit);
         spinnerFrequencyOptionsEdit = (Spinner) findViewById(R.id.spinnerFrequencyOptionsEdit);
@@ -71,7 +73,7 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         frequency = getIntent().getStringExtra(FREQUENCY);
 
         taskId = getIntent().getStringExtra(ID);
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,FREQUENCY_OPTIONS);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, FREQUENCY_OPTIONS);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFrequencyOptionsEdit.setAdapter(spinnerAdapter);
         //get the position(0,1,2,3) by frequency arg in func and set it to options in view
@@ -113,34 +115,32 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         finish();
 
         //starting alarm and calling notification service
-        Intent myIntent=getIntent();
-        newReminderUri=myIntent.getData();
-        Log.e("VALUE TIME"+this.getClass().getName(),"" +startTime);
-        Log.e("VALUE DATE" +this.getClass().getName(),"" +startDate);
-        Calendar calendar= Calendar.getInstance();
-        if(startDate==null){
+        Intent myIntent = getIntent();
+        newReminderUri = myIntent.getData();
+        Log.e("VALUE TIME" + this.getClass().getName(), "" + startTime);
+        Log.e("VALUE DATE" + this.getClass().getName(), "" + startDate);
+        Calendar calendar = Calendar.getInstance();
+        if (startDate == null) {
             int yyyy = c.get(Calendar.YEAR);
             int mm = c.get(Calendar.MONTH);
             int dd = c.get(Calendar.DAY_OF_MONTH);
-            Log.e("DATE TIME" ,"" +yyyy+""+mm + " "+ dd);
-            calendar.set(yyyy,mm,dd,h,m,0);
-        }else {
+            Log.e("DATE TIME", "" + yyyy + "" + mm + " " + dd);
+            calendar.set(yyyy, mm, dd, h, m, 0);
+        } else {
             calendar.set(yyyy, mm, dd, h, m, 0);
         }
 
-        long selectedTimestamp =  calendar.getTimeInMillis();
-        Log.e("NOTIFICATION","Timestamp =" + " "+selectedTimestamp);
+        long selectedTimestamp = calendar.getTimeInMillis();
+        Log.e("NOTIFICATION", "Timestamp =" + " " + selectedTimestamp);
 
-        if(editTextDescEdit.getText().toString().isEmpty()){
-            ReminderAlarmService.notificationContent="Tap to view more !";
-        }
-        else
-        {
-            ReminderAlarmService.notificationContent=editTextDescEdit.getText().toString();
+        if (editTextDescEdit.getText().toString().isEmpty()) {
+            ReminderAlarmService.notificationContent = "Tap to view more !";
+        } else {
+            ReminderAlarmService.notificationContent = editTextDescEdit.getText().toString();
         }
 
 
-        new AlarmScheduler().setAlarm(getApplicationContext(),selectedTimestamp,newReminderUri );
+        new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, newReminderUri);
     }
 
     private void deleteData() {
@@ -164,9 +164,9 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         String resultTime = DateTimeUtils.validTime(hourOfDay, minute);
                         editTextDateEdit.setText(DateTimeUtils.dateManager(resultTime));
-                        startTime= resultTime;
-                        h=hourOfDay;
-                        m=minute;
+                        startTime = resultTime;
+                        h = hourOfDay;
+                        m = minute;
                     }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
@@ -186,30 +186,27 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
                                           int monthOfYear, int dayOfMonth) {
                         String resultDate = DateTimeUtils.validDate(year, monthOfYear, dayOfMonth);
                         editTextDateEdit.setText(DateTimeUtils.dateManager(resultDate));
-                        yyyy=year;
-                        mm=monthOfYear;
-                        dd=dayOfMonth;
+                        yyyy = year;
+                        mm = monthOfYear;
+                        dd = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
-    private void shareTask()
-    {
-        String titleShare,deskShare;
-        titleShare=editTextTitleEdit.getText().toString();
-        deskShare=editTextDescEdit.getText().toString();
-
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.putExtra(Intent.EXTRA_SUBJECT,"Your task is " +titleShare );
-        email.putExtra(Intent.EXTRA_TEXT,"Task Description is " +deskShare  );
-        email.setType("message/rfc822");
-        startActivity(Intent.createChooser(email, "Choose an Email client :"));
-
+    private void shareTask() {
+        String titleShare, deskShare;
+        titleShare = editTextTitleEdit.getText().toString();
+        deskShare = editTextDescEdit.getText().toString();
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Your task is " + titleShare);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Task Description is " + deskShare);
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, "Choose an App to share it to"));
     }
 
-    private int getSelectedPosition(String selectedFrequency){
-        switch(selectedFrequency){
+    private int getSelectedPosition(String selectedFrequency) {
+        switch (selectedFrequency) {
             case REMINDER_TYPE_MONTHLY:
                 return 1;
             case REMINDER_TYPE_WEEKLY:

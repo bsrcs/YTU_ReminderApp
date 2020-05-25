@@ -201,23 +201,7 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
-    private void shareTask()
-    {
-        String titleShare,deskShare;
-        titleShare= editTextTitle.getText().toString();
-        deskShare= editTextDesc.getText().toString();
-        if(titleShare.isEmpty() && deskShare.isEmpty()) {
-            Toast.makeText(this, "First create a task !", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Intent email = new Intent(Intent.ACTION_SEND);
-            email.putExtra(Intent.EXTRA_SUBJECT, "Your task is " + titleShare);
-            email.putExtra(Intent.EXTRA_TEXT, "Task Description is " + deskShare);
-            email.setType("message/rfc822");
-            startActivity(Intent.createChooser(email, "Choose an Email client :"));
-        }
 
-    }
     @Override
     public void onClick(View v) {
         int i = v.getId();
