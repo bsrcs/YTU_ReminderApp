@@ -1,9 +1,5 @@
 package com.busra.reminder.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -11,10 +7,36 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.busra.reminder.R;
+import com.busra.reminder.constant.ReminderAppConstants;
+import com.busra.reminder.reminder.AlarmScheduler;
+import com.busra.reminder.reminder.ReminderAlarmService;
+import com.busra.reminder.utils.DateTimeUtils;
+import com.busra.reminder.utils.FirebaseHelper;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.UUID;
+
+import static com.busra.reminder.constant.ReminderAppConstants.*;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -22,25 +44,19 @@ import com.busra.reminder.reminder.AlarmScheduler;
 import com.busra.reminder.reminder.ReminderAlarmService;
 import com.busra.reminder.utils.DateTimeUtils;
 import com.busra.reminder.utils.FirebaseHelper;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.busra.reminder.R;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
 public class NewTaskActivity extends AppCompatActivity implements View.OnClickListener {
     public Calendar c;
-    private EditText titleTask, descTask, dateTask;
+    private EditText editTextTitle, editTextDesc, editTextDate;
 
     private DatabaseReference reference;
     private String firebaseKey;
@@ -56,10 +72,10 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_new_task);
         //initializing views and the calender
         c = Calendar.getInstance();
-        titleTask = (EditText) findViewById(R.id.titleTodoTask);
-        descTask = (EditText) findViewById(R.id.descTodoTask);
-        dateTask = (EditText) findViewById(R.id.dateTodoTask);
-        dateTask.setEnabled(false);
+        editTextTitle = (EditText) findViewById(R.id.titleTodoTask);
+        editTextDesc = (EditText) findViewById(R.id.descTodoTask);
+        editTextDate = (EditText) findViewById(R.id.dateTodoTask);
+        editTextDate.setEnabled(false);
 
         // Firebase
         reference = FirebaseHelper.initFirebase(this).child("Task" + keyTodo);
@@ -78,14 +94,14 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                dataSnapshot.getRef().child("titleTask").setValue(titleTask.getText().toString());
-                dataSnapshot.getRef().child("descTask").setValue(descTask.getText().toString());
-                dataSnapshot.getRef().child("dateTask").setValue(dateTask.getText().toString());
-                dataSnapshot.getRef().child("keyTask").setValue(keyTodo);
-                dataSnapshot.getRef().child("keyFirebase").setValue(firebaseKey);
-
-
+                dataSnapshot.getRef().child(TITLE).setValue(editTextTitle.getText().toString());
+                dataSnapshot.getRef().child(DESC).setValue(editTextDesc.getText().toString());
+                dataSnapshot.getRef().child(DATE).setValue(editTextDate.getText().toString());
+                //TODO add views to get category and frequency
+                dataSnapshot.getRef().child(CATEGORY).setValue("");
+                dataSnapshot.getRef().child(FREQUENCY).setValue("");
+                dataSnapshot.getRef().child(KEY).setValue(keyTodo);
+                dataSnapshot.getRef().child(KEY_FIREBASE).setValue(firebaseKey);
                 Intent intent = new Intent(NewTaskActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -119,12 +135,12 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         long selectedTimestamp =  calendar.getTimeInMillis();
         Log.e("NOTIFICATION","Timestamp =" + " "+selectedTimestamp);
 
-         if(descTask.getText().toString().isEmpty()){
+         if(editTextDesc.getText().toString().isEmpty()){
              ReminderAlarmService.notificationContent="Tap to view more !";
          }
          else
          {
-             ReminderAlarmService.notificationContent=descTask.getText().toString();
+             ReminderAlarmService.notificationContent= editTextDesc.getText().toString();
          }
 
         //starting the alarm manager
@@ -147,7 +163,7 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         String resultTime = DateTimeUtils.validTime(hourOfDay, minute);
                         Log.e("TIME VALUE,Timepicker"," " +resultTime);
-                        dateTask.setText(DateTimeUtils.dateManager(resultTime));
+                        editTextDate.setText(DateTimeUtils.dateManager(resultTime));
                         startTime= resultTime;
                       h=hourOfDay;
                       m=minute;
@@ -169,7 +185,7 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
                                           int monthOfYear, int dayOfMonth) {
                         String resultDate = DateTimeUtils.validDate(year, monthOfYear, dayOfMonth);
                         Log.e("DATE VALUE,Datepicker"," " +resultDate);
-                        dateTask.setText(DateTimeUtils.dateManager(resultDate));
+                        editTextDate.setText(DateTimeUtils.dateManager(resultDate));
                         startDate= resultDate;
                       yyyy=year;
                       mm=monthOfYear;
@@ -182,8 +198,8 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
     private void shareTask()
     {
         String titleShare,deskShare;
-        titleShare=titleTask.getText().toString();
-        deskShare=descTask.getText().toString();
+        titleShare= editTextTitle.getText().toString();
+        deskShare= editTextDesc.getText().toString();
         if(titleShare.isEmpty() && deskShare.isEmpty()) {
             Toast.makeText(this, "First create a task !", Toast.LENGTH_SHORT).show();
         }

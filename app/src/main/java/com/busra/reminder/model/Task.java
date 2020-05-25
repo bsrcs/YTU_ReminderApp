@@ -2,53 +2,55 @@ package com.busra.reminder.model;
 
 public class Task {
 
-    private String titleTask;
-    private String descTask;
-    private String dateTask;
-    private String keyTask;
+    private String title;
+    private String desc;
+    private String date;
+    private String key;
+    private String category;
+    private String frequency;
     private String keyFirebase;
 
     public Task() {
     }
 
-    public Task(String titleTask, String descTask, String dateTask, String keyTask, String keyFirebase) {
-        this.titleTask = titleTask;
-        this.descTask = descTask;
-        this.dateTask = dateTask;
-        this.keyTask = keyTask;
+    public Task(String title, String desc, String date, String key, String keyFirebase) {
+        this.title = title;
+        this.desc = desc;
+        this.date = date;
+        this.key = key;
         this.keyFirebase = keyFirebase;
     }
 
-    public String getTitleTask() {
-        return titleTask;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitleTask(String titleTask) {
-        this.titleTask = titleTask;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescTask() {
-        return descTask;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescTask(String descTask) {
-        this.descTask = descTask;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public String getDateTask() {
-        return dateTask;
+    public String getDate() {
+        return date;
     }
 
-    public void setDateTask(String dateTask) {
-        this.dateTask = dateTask;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getKeyTask() {
-        return keyTask;
+    public String getKey() {
+        return key;
     }
 
-    public void setKeyTask(String keyTask) {
-        this.keyTask = keyTask;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getKeyFirebase() {
@@ -58,4 +60,12 @@ public class Task {
     public void setKeyFirebase(String keyFirebase) {
         this.keyFirebase = keyFirebase;
     }
+
+    public String getCategory() { return category; }
+
+    public void setCategory(String category) { this.category = category; }
+
+    public String getFrequency() { return frequency; }
+
+    public void setFrequency(String frequency) { this.frequency = frequency; }
 }

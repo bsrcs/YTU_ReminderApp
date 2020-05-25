@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "979260447256",
-    "firebase_url": "https://remindme-20058.firebaseio.com",
-    "project_id": "remindme-20058",
-    "storage_bucket": "remindme-20058.appspot.com"
+    "project_number": "171522579490",
+    "firebase_url": "https://reminder-app-assignment.firebaseio.com",
+    "project_id": "reminder-app-assignment",
+    "storage_bucket": "reminder-app-assignment.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:979260447256:android:d152f6f521f7d78381416d",
+        "mobilesdk_app_id": "1:171522579490:android:50eb07ae07baa44f9abe7b",
         "android_client_info": {
           "package_name": "com.busra.reminder"
         }
       },
       "oauth_client": [
         {
-          "client_id": "979260447256-t9rd8k6435f4j5qvupkdggb6aadscplq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.busra.reminder",
-            "certificate_hash": "8f0c32fb9c49d30489715bc8b4d5b88744aa8e21"
-          }
-        },
-        {
-          "client_id": "979260447256-m8haha6m02s0a7lgnj7mql4u2d33cmj2.apps.googleusercontent.com",
+          "client_id": "171522579490-et0523re1gu63f122qism2937c5l1g6b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBLkCLXV-JZT52WyPQLER_r_YDqK_7ZDlA"
+          "current_key": "AIzaSyC3rKqk1ELkar5BhOsqCEN_45Wo-Q1CJjo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "979260447256-m8haha6m02s0a7lgnj7mql4u2d33cmj2.apps.googleusercontent.com",
+              "client_id": "171522579490-et0523re1gu63f122qism2937c5l1g6b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -39,12 +39,9 @@ import java.util.ArrayList;
 //TODO fix onBackPressed.
 public class MainActivity extends AppCompatActivity {
 
-
     private ImageButton btnLogOut;
     private ProgressBar progressBar;
-
     private DatabaseReference reference;
-
     private ArrayList<Task> tasks;
     private RecyclerView recyclerView;
     private ReminderAdapter reminderAdapter;
@@ -52,21 +49,22 @@ public class MainActivity extends AppCompatActivity {
     public static final String NIGHT_MODE = "NIGHT_MODE";
     private boolean isNightModeEnabled = false;
     SharedPreferences mPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // initializing  Firebase connection and loading data from internet
+        reference = FirebaseHelper.initFirebase(this);
         //checking if nightmode enabled? if yes then turn on nightmode. we are doing this before loading the layout
-        Log.e("isNightModeEnabled " ," "+isNightModeEnabled());
-        if ( isNightModeEnabled()) {
+        Log.e("isNightModeEnabled ", " " + isNightModeEnabled());
+        if (isNightModeEnabled()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         setContentView(R.layout.activity_main);
-
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        btnAddNewTask =  findViewById(R.id.btnAddNewTask);
+        btnAddNewTask = findViewById(R.id.btnAddNewTask);
         btnLogOut = (ImageButton) findViewById(R.id.btnLogOut);
         //opening add new task activity
         btnAddNewTask.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final PopupMenu popup = new PopupMenu(MainActivity.this, v);
                 popup.inflate(R.menu.menu_home);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -91,28 +88,24 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             //if night mode toggle switch
                             case R.id.dayNightMenu:
-
-                                Log.e("isNightModeEnabled menu" ," "+isNightModeEnabled());
+                                Log.e("isNightModeEnabled menu", " " + isNightModeEnabled());
                                 //if nightmode is not enabled then turn on the night mode and set the flag to true  else turn off the night mode and set the flag to false
-                              if( isNightModeEnabled()==false){
-                                  setIsNightModeEnabled(true);
-                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                                  Toast.makeText(MainActivity.this, "Turned on nightmode !", Toast.LENGTH_SHORT).show();
-                              }
-                              else{
-                                  setIsNightModeEnabled(false);
-                                  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                                  Toast.makeText(MainActivity.this, "Turned off nightmode !", Toast.LENGTH_SHORT).show();
-                              }
-
-
+                                if (isNightModeEnabled() == false) {
+                                    setIsNightModeEnabled(true);
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                                    Toast.makeText(MainActivity.this, "Turned on nightmode !", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    setIsNightModeEnabled(false);
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                                    Toast.makeText(MainActivity.this, "Turned off nightmode !", Toast.LENGTH_SHORT).show();
+                                }
                                 return true;
                             case R.id.logout:
                                 logout();
                                 return true;
-                                // About me menu and openning profile page
+                            // About me menu and openning profile page
                             case R.id.item3:
-                                Intent toProfileActivity= new Intent(MainActivity.this,ProfileActivity.class);
+                                Intent toProfileActivity = new Intent(MainActivity.this, ProfileActivity.class);
                                 startActivity(toProfileActivity);
                                 return true;
                             default:
@@ -123,12 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 });
                 //showing the popup menu
                 popup.show();
-
             }
         });
-
-        // initializing  Firebase connection and loading data from internet
-        reference = FirebaseHelper.initFirebase(this);
         getDataFromFirebase();
     }
 
@@ -138,30 +127,29 @@ public class MainActivity extends AppCompatActivity {
         isNightModeEnabled = mPrefs.getBoolean(NIGHT_MODE, false);
         return isNightModeEnabled;
     }
+
     //This method is to turn on night mode and set the isNightModeEnabled  shared pref value to true
     public void setIsNightModeEnabled(boolean isNightModeEnabled) {
         this.isNightModeEnabled = isNightModeEnabled;
-
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putBoolean(NIGHT_MODE, isNightModeEnabled);
         editor.apply();
     }
+
     // logout from firebase server and get back to the registration page
-    public void logout(){
-    FirebaseAuth.getInstance().signOut();
-    Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-    startActivity(intent);
-}
+    public void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+        startActivity(intent);
+    }
 
     //fetch data from the firebase server
     private void getDataFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
-
         recyclerView = (RecyclerView) findViewById(R.id.taskList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         tasks = new ArrayList<>();
-
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -173,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(reminderAdapter);
                 reminderAdapter.notifyDataSetChanged();
                 //calling swipe to delete function on lisitems
-                swipeToDelete ();
+                swipeToDelete();
                 progressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -182,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
     //This method deletes list items from the reminderList and also from the firebase server
-    private void swipeToDelete () {
+    private void swipeToDelete() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                     @Override
@@ -193,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                             target) {
                         return false;
                     }
+
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         tasks.remove(viewHolder.getAdapterPosition());

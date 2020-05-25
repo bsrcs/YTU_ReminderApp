@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import static com.busra.reminder.constant.ReminderAppConstants.*;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.busra.reminder.activity.TaskEditorActivity;
@@ -48,14 +47,16 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.titleTask.setText(tasks.get(position).getTitleTask());
-        holder.descTask.setText(tasks.get(position).getDescTask());
-        holder.dateTask.setText(tasks.get(position).getDateTask());
+        holder.titleTask.setText(tasks.get(position).getTitle());
+        holder.descTask.setText(tasks.get(position).getDesc());
+        holder.dateTask.setText(tasks.get(position).getDate());
 
-        final String title = tasks.get(position).getTitleTask();
-        final String description = tasks.get(position).getDescTask();
-        final String date = tasks.get(position).getDateTask();
-        final String key = tasks.get(position).getKeyTask();
+        final String title = tasks.get(position).getTitle();
+        final String description = tasks.get(position).getDesc();
+        final String date = tasks.get(position).getDate();
+        final String key = tasks.get(position).getKey();
+        final String frequency = tasks.get(position).getFrequency();
+        final String category = tasks.get(position).getCategory();
         final String keyFirebase = tasks.get(position).getKeyFirebase();
 
         //Edit Task config
@@ -63,11 +64,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, TaskEditorActivity.class);
-                intent.putExtra("titleTask", title);
-                intent.putExtra("descTask", description);
-                intent.putExtra("dateTask", date);
-                intent.putExtra("keyTask", key);
-                intent.putExtra("keyFirebase", keyFirebase);
+                intent.putExtra(TITLE, title);
+                intent.putExtra(DESC, description);
+                intent.putExtra(DATE, date);
+                intent.putExtra(KEY, key);
+                intent.putExtra(FREQUENCY, frequency);
+                intent.putExtra(CATEGORY, category);
+                intent.putExtra(KEY_FIREBASE, keyFirebase);
                 context.startActivity(intent);
             }
         });
