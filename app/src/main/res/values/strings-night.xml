@@ -1,0 +1,28 @@
+<resources>
+    <!--Show strings in display-->
+    <string name="app_name">RemindMe</string>
+    <string name="search_title">Search</string>
+    <string name="title_name">Reminder</string>
+    <string name="title_desc">Must Do today</string>
+    <string name="email_auth">Email</string>
+    <string name="password_auth">Password</string>
+    <string name="sign_in_auth">Sign In</string>
+    <string name="sign_up_auth">Sign Up</string>
+    <string name="subtitle_auth">Log in to your account</string>
+
+    <!-- Main Activity -->
+    <string name="add_btn">+</string>
+    <string name="end_desc">No More ToDo`s</string>
+
+    <!-- NewTask and Edit Activity -->
+    <string name="title_page_task">Create New Task</string>
+    <string name="add_title_task">Add Title</string>
+    <string name="add_category_task">Add Category</string>
+    <string name="add_frequency_task">Add Frequency</string>
+    <string name="add_desc_task">Description</string>
+    <string name="add_date_task">Timeline</string>
+    <string name="btn_save_task">Create Now</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_delete">Delete</string>
+    <string name="reminder_title">AlarmReminder</string>
+</resources>

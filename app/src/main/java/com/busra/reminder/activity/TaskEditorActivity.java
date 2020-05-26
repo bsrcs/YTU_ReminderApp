@@ -123,7 +123,7 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void updateTask() {
-        // Edit task in database
+        // Edit task in database with the values from update activity.
         reference.child(TITLE).setValue(editTextTitleEdit.getText().toString());
         reference.child(DESC).setValue(editTextDescEdit.getText().toString());
         reference.child(DATE).setValue(editTextDateEdit.getText().toString());

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Set colors-->
     <color name="colorPrimary">#9C00FF</color>
     <color name="colorPrimaryDark">#000C5D</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#818181</color>
+    <color name="colorTodoTitle">#283747</color>
+    <color name="colorTodoDesc">#797D7F</color>
+    <color name="colorLightGray">#E5E7E9</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorShare">#42A5F5</color>
+    <color name="colorDelete">#F44336</color>
     <color name="colorPrimaryNight">#3F51B5</color>
     <color name="colorPrimaryDarkNight">#303F9F</color>
     <color name="colorAccentNight">#FFC107</color>
-    FFC107
     <color name="bg_light">#F4F4F4</color>
     <color name="bg_dark">#263238</color>
 </resources>
