@@ -33,13 +33,21 @@ import java.util.Calendar;
 
 public class NewTaskActivity extends AppCompatActivity implements View.OnClickListener {
     public Calendar c;
-    private EditText editTextTitle, editTextDesc, editTextDate, editTextCategory;
-    private Spinner spinnerFrequencyOptions;
+    private EditText editTextTitle, editTextDesc, editTextDate;
+    private Spinner spinnerFrequencyOptions, spinnerCategoryOptions;
     private DatabaseReference reference;
     private String newTaskId = UUID.randomUUID().toString();
     private Uri mCurrentReminderUri;
     String startTime, startDate;
     int h, m, dd, mm, yyyy;
+
+    private String[] CATEGORY_OPTIONS ={
+            ReminderAppConstants.CATEGORY_TYPE_MEETING,
+            ReminderAppConstants.CATEGORY_TYPE_BDAY,
+            ReminderAppConstants.CATEGORY_TYPE_ANNIVERSARY,
+            ReminderAppConstants.CATEGORY_TYPE_INTERVIEW,
+            ReminderAppConstants.CATEGORY_TYPE_OTHER
+    };
     private String[] FREQUENCY_OPTIONS = {
             ReminderAppConstants.REMINDER_TYPE_ONCE,
             ReminderAppConstants.REMINDER_TYPE_MONTHLY,
@@ -57,7 +65,11 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         editTextDesc = (EditText) findViewById(R.id.descTodoTask);
         editTextDate = (EditText) findViewById(R.id.dateTodoTask);
         editTextDate.setEnabled(false);
-        editTextCategory = (EditText) findViewById(R.id.editTextCategory);
+        spinnerCategoryOptions = findViewById(R.id.spinnerCategoryOptions);
+        ArrayAdapter spinnerCatAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, CATEGORY_OPTIONS);
+        spinnerCatAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        spinnerCategoryOptions.setAdapter(spinnerCatAdapter);
+
         spinnerFrequencyOptions = findViewById(R.id.spinnerFrequencyOptions);
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, FREQUENCY_OPTIONS);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -166,9 +178,9 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
         Task newTask=new Task();
         newTask.setId(newTaskId);
         newTask.setTitle(editTextTitle.getText().toString());
-        newTask.setCategory(editTextCategory.getText().toString());
         newTask.setDate(editTextDate.getText().toString());
         newTask.setDesc(editTextDesc.getText().toString());
+        newTask.setCategory((String) spinnerCategoryOptions.getSelectedItem());
         newTask.setFrequency((String) spinnerFrequencyOptions.getSelectedItem());
         return newTask;
     }
@@ -197,6 +209,33 @@ public class NewTaskActivity extends AppCompatActivity implements View.OnClickLi
             ReminderAlarmService.notificationContent = editTextDesc.getText().toString();
         }
         //starting the alarm manager
-        new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
+        if(task.getFrequency().equals(ReminderAppConstants.REMINDER_TYPE_ONCE)){
+            new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
+        }
+        //3 months
+        if(task.getFrequency().equals(ReminderAppConstants.REMINDER_TYPE_MONTHLY)){
+            for(int i=0;i<3;i++){
+                //add 30 days and get time to set 3 different alarms
+                calendar.add(Calendar.MONTH,1);
+                selectedTimestamp=calendar.getTimeInMillis();
+                new AlarmScheduler().setAlarm(getApplicationContext(),selectedTimestamp , mCurrentReminderUri);
+            }
+        }
+        if(task.getFrequency().equals(ReminderAppConstants.REMINDER_TYPE_WEEKLY)){
+            for(int i=0;i<12;i++){
+                //add 1 week every time and get time to set 12 different alarms
+                calendar.add(Calendar.WEEK_OF_MONTH,1);
+                selectedTimestamp=calendar.getTimeInMillis();
+                new AlarmScheduler().setAlarm(getApplicationContext(),selectedTimestamp , mCurrentReminderUri);
+            }
+        }
+        if(task.getFrequency().equals(ReminderAppConstants.REMINDER_TYPE_YEARLY)){
+            for(int i=0;i<3;i++){
+                //add 1 year every time and get time to set 3 different alarms
+                calendar.add(Calendar.YEAR,1);
+                selectedTimestamp=calendar.getTimeInMillis();
+                new AlarmScheduler().setAlarm(getApplicationContext(),selectedTimestamp , mCurrentReminderUri);
+            }
+        }
     }
 }

@@ -60,9 +60,27 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         final String taskId = tasks.get(position).getId();
         final String frequency = tasks.get(position).getFrequency();
         final String category = tasks.get(position).getCategory();
-        if(category.equals("bday")){
+       /* if(category.equals("bday")) {
             holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FFC0CB"));
         }
+*/
+       switch(category){
+           case CATEGORY_TYPE_ANNIVERSARY:
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FFC0CB"));
+               break;
+           case CATEGORY_TYPE_BDAY:
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FF5733"));
+               break;
+           case CATEGORY_TYPE_INTERVIEW:
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#DAF7A6"));
+               break;
+           case CATEGORY_TYPE_MEETING:
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FFC300"));
+               break;
+           default:
+
+       }
+
         //Edit Task config
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

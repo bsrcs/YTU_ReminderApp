@@ -27,6 +27,10 @@ import com.busra.reminder.R;
 import java.util.Calendar;
 
 import static com.busra.reminder.constant.ReminderAppConstants.CATEGORY;
+import static com.busra.reminder.constant.ReminderAppConstants.CATEGORY_TYPE_ANNIVERSARY;
+import static com.busra.reminder.constant.ReminderAppConstants.CATEGORY_TYPE_BDAY;
+import static com.busra.reminder.constant.ReminderAppConstants.CATEGORY_TYPE_INTERVIEW;
+import static com.busra.reminder.constant.ReminderAppConstants.CATEGORY_TYPE_MEETING;
 import static com.busra.reminder.constant.ReminderAppConstants.DATE;
 import static com.busra.reminder.constant.ReminderAppConstants.DESC;
 import static com.busra.reminder.constant.ReminderAppConstants.FREQUENCY;
@@ -38,14 +42,21 @@ import static com.busra.reminder.constant.ReminderAppConstants.TITLE;
 
 public class TaskEditorActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText editTextTitleEdit, editTextCategoryEdit, editTextDescEdit, editTextDateEdit;
-    private Spinner spinnerFrequencyOptionsEdit;
+    private EditText editTextTitleEdit, editTextDescEdit, editTextDateEdit;
+    private Spinner spinnerFrequencyOptionsEdit, spinnerCategoryOptionsEdit;
     private DatabaseReference reference;
     private String taskId;
     private Uri newReminderUri;
-    String startTime, startDate, frequency;
+    String startTime, startDate, frequency, category;
     int h, m, dd, mm, yyyy;
     public Calendar c;
+    private String[] CATEGORY_OPTIONS ={
+            CATEGORY_TYPE_MEETING,
+            CATEGORY_TYPE_BDAY,
+            CATEGORY_TYPE_ANNIVERSARY,
+            CATEGORY_TYPE_INTERVIEW,
+            ReminderAppConstants.CATEGORY_TYPE_OTHER
+    };
     private String[] FREQUENCY_OPTIONS = {
             ReminderAppConstants.REMINDER_TYPE_ONCE,
             ReminderAppConstants.REMINDER_TYPE_MONTHLY,
@@ -59,18 +70,18 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_task_editor);
         c = Calendar.getInstance();
         editTextTitleEdit = (EditText) findViewById(R.id.editTextTitleEdit);
-        editTextCategoryEdit = (EditText) findViewById(R.id.editTextCategoryEdit);
+        spinnerCategoryOptionsEdit = (Spinner) findViewById(R.id.spinnerCategoryOptionsEdit);
         editTextDescEdit = (EditText) findViewById(R.id.editTextDescEdit);
         editTextDateEdit = (EditText) findViewById(R.id.editTextDateEdit);
         spinnerFrequencyOptionsEdit = (Spinner) findViewById(R.id.spinnerFrequencyOptionsEdit);
 
         // get a value from prev page
         editTextTitleEdit.setText(getIntent().getStringExtra(TITLE));
-        editTextCategoryEdit.setText(getIntent().getStringExtra(CATEGORY));
         editTextDescEdit.setText(getIntent().getStringExtra(DESC));
         editTextDateEdit.setText(getIntent().getStringExtra(DATE));
         // get frequency as a string from Intent
         frequency = getIntent().getStringExtra(FREQUENCY);
+        category = getIntent().getStringExtra(CATEGORY);
 
         taskId = getIntent().getStringExtra(ID);
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, FREQUENCY_OPTIONS);
@@ -78,6 +89,13 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         spinnerFrequencyOptionsEdit.setAdapter(spinnerAdapter);
         //get the position(0,1,2,3) by frequency arg in func and set it to options in view
         spinnerFrequencyOptionsEdit.setSelection(getSelectedPosition(frequency));
+
+        ArrayAdapter spinnerCatAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, CATEGORY_OPTIONS);
+        spinnerCatAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        spinnerCategoryOptionsEdit.setAdapter(spinnerCatAdapter);
+        spinnerCategoryOptionsEdit.setSelection(getSelectedCategoryPosition(category));
+
+
         // get reference from firebase by using the the id of task to be editing
         reference = FirebaseHelper.initFirebase(this).child(taskId);
 
@@ -93,7 +111,7 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btnEdit)
-            insertData();
+            updateTask();
         else if (i == R.id.btnDelete)
             deleteData();
         else if (i == R.id.btnEditTime)
@@ -104,12 +122,13 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
             shareTask();
     }
 
-    private void insertData() {
+    private void updateTask() {
         // Edit task in database
         reference.child(TITLE).setValue(editTextTitleEdit.getText().toString());
         reference.child(DESC).setValue(editTextDescEdit.getText().toString());
         reference.child(DATE).setValue(editTextDateEdit.getText().toString());
-
+        reference.child(CATEGORY).setValue(spinnerCategoryOptionsEdit.getSelectedItem());
+        reference.child(FREQUENCY).setValue(spinnerFrequencyOptionsEdit.getSelectedItem());
         Intent intent = new Intent(TaskEditorActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -197,6 +216,20 @@ public class TaskEditorActivity extends AppCompatActivity implements View.OnClic
         shareIntent.putExtra(Intent.EXTRA_TEXT, "Task Description is " + deskShare);
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, "Choose an App to share it to"));
+    }
+    private int getSelectedCategoryPosition(String selectedCategory){
+        switch(selectedCategory){
+            case CATEGORY_TYPE_MEETING:
+                return 0;
+            case CATEGORY_TYPE_BDAY:
+                return 1;
+            case CATEGORY_TYPE_ANNIVERSARY:
+                return 2;
+            case CATEGORY_TYPE_INTERVIEW:
+                return 3;
+            default:
+                return 4;
+        }
     }
 
     private int getSelectedPosition(String selectedFrequency) {
