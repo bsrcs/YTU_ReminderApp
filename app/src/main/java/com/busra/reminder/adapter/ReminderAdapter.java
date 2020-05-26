@@ -66,16 +66,16 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
 */
        switch(category){
            case CATEGORY_TYPE_ANNIVERSARY:
-               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FFC0CB"));
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#5499C7"));
                break;
            case CATEGORY_TYPE_BDAY:
-               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FF5733"));
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#76D7C4"));
                break;
            case CATEGORY_TYPE_INTERVIEW:
-               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#DAF7A6"));
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#F1948A"));
                break;
            case CATEGORY_TYPE_MEETING:
-               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#FFC300"));
+               holder.linearLayoutContainer.setBackgroundColor(Color.parseColor("#ABB2B9"));
                break;
            default:
 
